@@ -1,5 +1,8 @@
 package com.attila.vocabulary.ux.spring;
 
+import com.attila.vocabulary.ux.common.IAccountService;
+import com.attila.vocabulary.ux.common.repositories.IUserRepository;
+import com.attila.vocabulary.ux.spring.Account.AccountService;
 import com.attila.vocabulary.ux.spring.PersistenceConfig;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -15,4 +18,9 @@ public class AppConfig {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+
+    @Bean
+    public IAccountService accountService(final IUserRepository userRepository){
+        return new AccountService(userRepository);
+    }
 }
