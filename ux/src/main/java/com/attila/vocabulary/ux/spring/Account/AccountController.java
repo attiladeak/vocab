@@ -1,4 +1,4 @@
-package com.attila.vocabulary.ux.spring.Account;
+package com.attila.vocabulary.ux.spring.account;
 
 
 import com.attila.vocabulary.ux.common.IAccountService;
