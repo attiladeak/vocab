@@ -1,28 +1,21 @@
-package com.attila.vocabulary.ux.common.entities;
+package com.attila.vocabulary.ux.spring.account.DTO;
 
-import org.jetbrains.annotations.NotNull;
+import com.attila.vocabulary.ux.common.entities.User;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
-import java.util.List;
 
 /**
- * Created by attila.deak on 6/12/2016.
+ * Created by attila.deak on 7/4/2016.
  */
+public class UserDTO {
 
-@Entity
-@Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username", unique = true)
     private String username;
-
-    @OneToMany(mappedBy = "createdby")
-    private List<Vocabulary> vocabularies;
 
     private String password;
 
@@ -32,8 +25,14 @@ public class User {
 
     private Integer loginnr;
 
-
-
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.username = user.getUserName();
+        this.password = user.getPassword();
+        this.administrator = user.isAdministrator();
+        this.lastlogin = user.getLastlogin();
+        this.loginnr = user.getLoginnr();
+    }
 
     public Integer getId() {
         return id;
@@ -43,11 +42,11 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -59,7 +58,7 @@ public class User {
         this.password = password;
     }
 
-    public Boolean isAdministrator() {
+    public Boolean getAdministrator() {
         return administrator;
     }
 

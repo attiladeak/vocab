@@ -31,7 +31,7 @@
         </div>
         <div style="${displayMetod}"><input type="submit" value="Register" class="btn-default" style="margin-top: 20px"></div>
         <div style="margin-top: 20px; color:red">${message}</div>
-        <div><a href="home">Login</a></div>
+        <div><a href="userLoginController">Login</a></div>
     </form>
 </div>
 </body>

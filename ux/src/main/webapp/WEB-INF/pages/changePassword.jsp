@@ -32,7 +32,7 @@
         <div><input type="submit" value="Change password" class="btn-default" style="margin-top: 20px"></div>
         <div style="margin-top: 20px; color:red">${message}</div>
         <br/>
-        <div><a href="home">Back to homepage</a></div>
+        <div><a href="/">Back to homepage</a></div>
 
     </form>
 </div>

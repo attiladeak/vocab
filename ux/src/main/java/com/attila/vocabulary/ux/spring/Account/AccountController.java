@@ -3,6 +3,7 @@ package com.attila.vocabulary.ux.spring.account;
 
 import com.attila.vocabulary.ux.common.IAccountService;
 import com.attila.vocabulary.ux.common.entities.User;
+import com.attila.vocabulary.ux.spring.account.DTO.UserDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +11,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @Service
 @Controller
+@RequestMapping(path="account")
 public class AccountController {
 
     public static final String MESSAGE_TAG = "message";
     public static final String REGISTER_SUCCESS = "userRegistration";
     public static final String REGISTER_ERROR = "userRegistration";
-    public static final String LOGIN_SUCCESS = "homepage";
+    public static final String LOGIN_SUCCESS = "redirect:/index.html";
     public static final String LOGIN_ERROR = "userLogin";
     public static final String PASSWORD_CHANGE = "changePassword";
     private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
@@ -32,6 +31,11 @@ public class AccountController {
     @Autowired
     private IAccountService registerService;
 
+
+    @RequestMapping(path = "userRegistration")
+    public String userRegistration() {
+        return "userRegistration";
+    }
 
     @Transactional
     @RequestMapping(path = "userRegistration", method = RequestMethod.POST)
@@ -80,6 +84,11 @@ public class AccountController {
         return resultPage;
     }
 
+    @RequestMapping(path="userLoginController" ,method = RequestMethod.GET)
+    public String userLogin() {
+        return LOGIN_ERROR;
+    }
+
     @Transactional
     @RequestMapping(path = "userLoginController", method = RequestMethod.POST)
     public String userLogin(@RequestParam("Pasword") String pasword, @RequestParam("Uname") String uname, final ModelMap model, HttpSession session) {
@@ -93,10 +102,9 @@ public class AccountController {
             case SUCCESS: {
                 String currentUserName = "";
                 resultPage = LOGIN_SUCCESS;
-                model.addAttribute(MESSAGE_TAG, "You are a lucky fellow" + uname + "!");
                 User loggedInUser = registerService.getLoggedInUser(uname, pasword);
                 session.setAttribute("currentUser", loggedInUser);
-                model.addAttribute("loggedInUser", loggedInUser.getUserName());
+
                 break;
             }
             case INVALID_CREDENTIAL: {
@@ -126,7 +134,7 @@ public class AccountController {
     @RequestMapping(path = "logoutController", method = RequestMethod.GET)
     public String userLogout(HttpSession session) {
 
-        final String resultPage = "redirect:/home";
+        final String resultPage = "redirect:/";
         session.invalidate();
 
         return resultPage;
@@ -187,5 +195,60 @@ public class AccountController {
     @ResponseBody
     String buttonclick() {
         return "Hello";
+    }
+
+    @RequestMapping(path="getCurrentUser" ,method = RequestMethod.POST)
+    @ResponseBody public String getCurrentUser(HttpSession session) {
+
+        User currentUser = (User)session.getAttribute("currentUser");
+        return currentUser.getUserName();
+    }
+
+    @Transactional
+    @RequestMapping(path = "createUser", method = RequestMethod.POST)
+    @ResponseBody
+    String createUser(String username, String password) {
+        String response = null;
+
+        User newUser = registerService.createUser(username, password, false);
+        if (newUser != null){
+            response = "Success";
+        } else {
+            response = "Fail";
+        }
+
+        return response;
+    }
+
+    @Transactional
+    @RequestMapping(path = "updateUser", method = RequestMethod.POST)
+    @ResponseBody
+    String updateUser(String userid, String password) {
+        String response = registerService.updateUser(userid, password);
+
+        return response;
+    }
+
+    @Transactional
+    @RequestMapping(path = "deleteUser", method = RequestMethod.POST)
+    @ResponseBody
+    String deleteUser(@RequestBody String userid) {
+        String response = registerService.deleteUser(userid);
+
+        return response;
+    }
+
+    @Transactional
+    @RequestMapping(path = "getUser", method = RequestMethod.POST)
+    @ResponseBody
+    UserDTO getUser(@RequestBody String id) {
+        User user = registerService.getUser(id);
+
+        if(user != null){
+            UserDTO userDTO = new UserDTO(user);
+            return userDTO;
+        } else {
+            return null;
+        }
     }
 }

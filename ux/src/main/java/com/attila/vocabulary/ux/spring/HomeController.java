@@ -16,21 +16,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class HomeController {
 
-    @RequestMapping(path = "home")
-    public String homeRedirect(HttpSession session, ModelMap model) {
-        User loggedInUser = (User) session.getAttribute("currentUser");
-        if(loggedInUser != null){
-            model.addAttribute("loggedInUser", loggedInUser.getUserName());
-            return "homepage";
-        }
-        else {
-            return "userLogin";
-        }
-    }
-
-    @RequestMapping(path = "redirect", method = RequestMethod.GET)
-    public String redirect() {
-        return "userRegistration";
+    @RequestMapping(path = "/")
+    public String homeRedirect(HttpSession session) {
+            return "redirect:/index.html";
     }
 
 }

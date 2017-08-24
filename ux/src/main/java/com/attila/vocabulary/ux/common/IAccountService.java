@@ -18,6 +18,14 @@ public interface IAccountService {
 
     CreationOutcomes changeAccountPassword(User user, @NotNull String oldPassword, @NotNull String newPassword, @NotNull String reTypeNewPassword);
 
+    User createUser (String username, String password, Boolean admin);
+
+    String deleteUser (String userid);
+
+    String updateUser (String userid, String password);
+
+    User getUser (String userid);
+
     enum CreationOutcomes {
         SUCCESS,
         RETYPED_PASSWORD_DO_NOT_MATCH,

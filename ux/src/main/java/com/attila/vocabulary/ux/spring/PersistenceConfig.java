@@ -15,10 +15,10 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("com.helloit.householdtracker.ux.common.repository")
+@EnableJpaRepositories("com.attila.vocabulary.ux.common.repositories")
 public class PersistenceConfig {
 
-    public static final String ENTITIES_BASE_PACKAGE = "com.helloit.householdtracker.ux.common.entities";
+    public static final String ENTITIES_BASE_PACKAGE = "com.attila.vocabulary.ux.common.entities";
     public static final String TRUE_TAG = "true";
     private static final String PROPERTY_HIBERNATE_DIALECT = "hibernate.dialect";
     private static final String PROPERTY_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
